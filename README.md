@@ -1,5 +1,5 @@
-PixiJS Tilemap Ex
-=================
+TienTN's Litemap Engine
+=======================
 
 Based on this project: https://github.com/hardwarelayer/PixiJSTilemap
 

@@ -93,7 +93,7 @@ TilemapEx.prototype.mouseDown = function (evt) {
 
     this.selectTile(selX, selY);
 
-    this.parent.emit('evt_mouse_down', evt);
+    this.parent.emit('evt_mouse_down', evt, selX, selY);
   }
 }
 
