@@ -2,7 +2,7 @@
 
 Based on this project: https://github.com/hardwarelayer/PixiJSTilemap
 
-!2DMap sample(https://github.com/hardwarelayer/my_public_images/blob/main/images/litemap_engine1.png)
+![2DMap sample](https://github.com/hardwarelayer/my_public_images/blob/main/images/litemap_engine1.png)
 
 I want to build a more "engine like" library on top of that.
 
