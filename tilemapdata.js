@@ -10,12 +10,16 @@ function MapTileData(x, y, terrain, production, buff, owner) {
   this.owner = owner;
 }
 
-function TilemapData(mapWidth, mapHeight){
+function TilemapData(mapWidth, mapHeight, landTotal, landSize){
   this.data = Array.from(Array(mapHeight), () => new Array(mapWidth));
   this.startLocation = {x: 0, y: 0};
 
   this.width = mapWidth;
   this.height = mapHeight;
+  this.landTotal = landTotal;
+  this.landSize = landSize;
+
+  console.log(this.landTotal, this.landSize);
 }
 
 TilemapData.prototype.addMapTileData = function(x, y, terrain){
@@ -42,8 +46,8 @@ TilemapData.prototype.generateMapData = function(){
   }
 
   // spawn some landmasses
-  for(var j=0; j<landTotal; j++){ //number of landmasses
-    for(var i=0; i<landSize; i++){ //size seed of landmasses
+  for(var j=0; j<this.landTotal; j++){ //number of landmasses
+    for(var i=0; i<this.landSize; i++){ //size seed of landmasses
       this.spawnLandmassData(Math.floor(i / 2) + 1,
                          Math.floor(Math.random()*mapWidth),
                          Math.floor(Math.random()*mapHeight));
@@ -66,20 +70,20 @@ TilemapData.prototype.generateMapData = function(){
 
 }
 
-TilemapData.prototype.spawnLandmassData = function(landSize, x, y){
+TilemapData.prototype.spawnLandmassData = function(lSize, x, y){
   x = Math.max(x, 0);
   x = Math.min(x, mapWidth - 1);
   y = Math.max(y, 0);
   y = Math.min(y, mapHeight - 1);
 
-  if(this.getMapTileData(x, y).terrain < landSize){
-    this.changeMapTileData(x, y, Math.min(4, Math.max(1, Math.floor(landSize /
+  if(this.getMapTileData(x, y).terrain < lSize){
+    this.changeMapTileData(x, y, Math.min(4, Math.max(1, Math.floor(lSize /
                                                              (Math.random() + 0.9)))));
   }
 
-  for(var i = 0; i<landSize; i++){
+  for(var i = 0; i<lSize; i++){
     var horiz = Math.floor(Math.random() * 3) - 1;
     var vert = Math.floor(Math.random() * 3) - 1;
-    this.spawnLandmassData(landSize - 1, x + horiz, y + vert);
+    this.spawnLandmassData(lSize - 1, x + horiz, y + vert);
   }
 }

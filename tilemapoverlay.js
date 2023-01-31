@@ -47,24 +47,14 @@ TilemapOverlay.prototype.mouseDrag = function(evt) {
 }
 
 TilemapOverlay.prototype.addTile = function(x, y, terrain){
-  var tile = PIXI.Sprite.from("transparent");
+  var tile = PIXI.Sprite.from(terrain);
   tile.position.x = x * this.tileSize;
   tile.position.y = y * this.tileSize;
   tile.tileX = x;
   tile.tileY = y;
   tile.terrain = terrain;
   zindex = x * this.tilesHeight + y; //because we fill from left, topdown
-  if (x != 3) 
-    this.addChildAt(tile, zindex);
-  else {
-    var tile2 = PIXI.Sprite.from("man");
-    tile2.position.x = x * this.tileSize;
-    tile2.position.y = y * this.tileSize;
-    tile2.tileX = x;
-    tile2.tileY = y;
-    tile2.terrain = terrain;
-    this.addChildAt(tile2, zindex);
-  }
+  this.addChildAt(tile, zindex);
 }
 
 TilemapOverlay.prototype.changeTile = function(x, y, terrain){
@@ -82,7 +72,7 @@ TilemapOverlay.prototype.loadMapData = function(){
   for(var i = 0; i < this.tilesWidth; ++i){
     var currentRow = [];
     for(var j=0; j < this.tilesHeight; j++){
-      this.addTile(i, j, this.mapData[j][i].terrain);
+      this.addTile(i, j, "transparent");
     }
   }
 }

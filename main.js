@@ -12,18 +12,11 @@ var menuBarWidth = 120;
 
 var mapWidth = 64;
 var mapHeight = 50;
-var landTotal = 10; //25
-var landSize = 10; //12
+var landTotal = 18; //25
+var landSize = 15; //12
 
-function globalZoomin() {
-  tilemap.zoomIn();
-  overlay.zoomIn();
-}
-
-function globalZoomout() {
-  tilemap.zoomOut();
-  overlay.zoomOut();
-}
+var selX = 0;
+var selY = 0;
 
 function Main(tilesPath, w, h){
   // For zoomed-in pixel art, we want crisp pixels instead of fuzziness
@@ -57,7 +50,7 @@ function Main(tilesPath, w, h){
 // called when sprites are finished loading
 function onLoaded(){
 
-  mapData = new TilemapData(mapWidth, mapHeight);
+  mapData = new TilemapData(mapWidth, mapHeight, landTotal, landSize);
   mapData.generateMapData();
 
   tilemap = new TilemapEx(mapData.data, mapData.startLocation);
@@ -67,7 +60,7 @@ function onLoaded(){
   overlay.position.x = menuBarWidth;
   stage.addChild(tilemap, overlay);
 
-  menu = new Menu(globalZoomin, globalZoomout);
+  menu = new Menu();
   stage.addChild(menu);
   // zoom in on the starting tile
   tilemap.selectTile(tilemap.startLocation.x, tilemap.startLocation.y);
@@ -77,12 +70,17 @@ function onLoaded(){
 
   stage.addEventListener("evt_mouse_down", function(evt, x, y) {
     overlay.mouseDown(evt);
+    selX = x;
+    selY = y;
     console.log("select tile ", x, y);
+
+    console.log(mapData.getMapTileData(x,y));
   });
   stage.addEventListener("evt_mouse_drag", function(evt) {
     overlay.mouseDrag(evt);
   });
   stage.addEventListener("side_menu_event", function(menuCmd) {
+    console.log(menuCmd);
     if (menuCmd == "zoom_out") {
       tilemap.zoomOut();
       overlay.zoomOut();
@@ -91,6 +89,16 @@ function onLoaded(){
       tilemap.zoomIn();
       overlay.zoomIn();
     }
+    else if (menuCmd == "change_tile") {
+      tilemap.changeTile(selX, selY, "6");
+    }
+    else if (menuCmd == "add_char") {
+      overlay.changeTile(selX, selY, "man");
+    }
+    else if (menuCmd == "remove_char") {
+      overlay.changeTile(selX, selY, "transparent");
+    }
+
   });
 
   // begin drawing

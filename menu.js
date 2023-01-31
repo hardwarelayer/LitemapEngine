@@ -24,17 +24,23 @@ function Menu(){
   this.selectedTileText.style = tileTextStyle;
   this.addChild(this.selectedTileText);
 
-  this.addMenuButton("+", 0, 12, 'zoom_in');
-  this.addMenuButton("-", 30, 12, 'zoom_out');
+  var w = this.addMenuButton("+", 0, 12, 'zoom_in', 40);
+  w = this.addMenuButton("-", w+1, 12, 'zoom_out', 40);
+  this.addMenuButton("Change Tile", 0, 60, 'change_tile', 12);
+  this.addMenuButton("Add character", 0, 80, 'add_char', 12);
+  this.addMenuButton("Remove character", 0, 100, 'remove_char', 12);
 }
 
-Menu.prototype.addMenuButton = function(text, x, y, menuCmd){
-  var button = new PIXI.Text(text, new PIXI.TextStyle({ fontFamily: "Arial", fontSize: "40px", fill: "#FFFFFF"}));
+Menu.prototype.addMenuButton = function(text, x, y, menuCmd, size){
+  var fSize = size.toString() + "px";
+  var button = new PIXI.Text(text, new PIXI.TextStyle({ fontFamily: "Arial", fontSize: fSize, fill: "#FFFFFF"}));
   button.position.x = x;
   button.position.y = y;
   button.interactive = true;
   button.buttonMode = true;
-  button.hitArea = new PIXI.Rectangle(0, 12, 30, 30);
+  button.fontSize = fSize;
+
+  button.hitArea = new PIXI.Rectangle(0, 0, x+button.width, y+button.height);
   button.on('mousedown', function(data){
     mousedown(data, button);
   });
@@ -42,7 +48,7 @@ Menu.prototype.addMenuButton = function(text, x, y, menuCmd){
     mousedown(data, button);
   });
   button.on('mouseover', function(data){
-    button.style = new PIXI.TextStyle({ fontFamily: "Arial", fontSize: "40px", fill: "#FFFF00" });
+    button.style = new PIXI.TextStyle({ fontFamily: "Arial", fontSize: fSize, fill: "#FFFF00" });
   });
   button.on('mouseup', function(data){
     mouseup(data, button, this.parent, menuCmd);
@@ -57,20 +63,22 @@ Menu.prototype.addMenuButton = function(text, x, y, menuCmd){
     mouseup_outside(data, button);
   });
   button.on('mouseout', function(data){
-    button.style = new PIXI.TextStyle({ fontFamily: "Arial", fontSize: "40px", fill: "#FFFFFF" });
+    button.style = new PIXI.TextStyle({ fontFamily: "Arial", fontSize: fSize, fill: "#FFFFFF" });
   });
   this.addChild(button);
+
+  return button.width;
 }
 
 function mousedown(data, button) {
-    button.style = new PIXI.TextStyle({ fontFamily: "Arial", fontSize: "40px", fill: "#FF0000" });
+    button.style = new PIXI.TextStyle({ fontSize: button.fontSize, fill: "#FF0000" });
 }
 
 function mouseup(data, button, parentPtr, menuCmd) {
     parentPtr.parent.emit("side_menu_event", menuCmd);
-    button.style = new PIXI.TextStyle({ fontFamily: "Arial", fontSize: "40px", fill: "#FFFFFF" });
+    button.style = new PIXI.TextStyle({ fontSize: button.fontSize, fill: "#FFFFFF" });
 }
 
 function mouseup_outside(data, button) {
-  button.style = new PIXI.TextStyle({ fontFamily: "Arial", fontSize: "40px", fill: "#FFFFFF" });
+  button.style = new PIXI.TextStyle({ fontSize: button.fontSize, fill: "#FFFFFF" });
 }
