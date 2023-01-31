@@ -1,5 +1,7 @@
 # TienTN's Litemap Engine
 
+Lite HTML5 tile map engine for 2D sprite based map app/game. Use PixiJS 7.1.1 as renderer.
+
 Based on this project: https://github.com/hardwarelayer/PixiJSTilemap
 
 ![2DMap sample](https://github.com/hardwarelayer/my_public_images/blob/main/images/litemap_engine1.png)
